@@ -503,6 +503,53 @@ class ScraperMoreFaster {
 	}
 
 	/*
+	Function:   getTableTags
+	Purpose:    Gets the table tags with the specified class
+				from the source stored in the $html variable.
+	Returns:    Associative array conatining all found table tags.
+	*/
+	public function getTableTags($class) {
+		$tags_array = array();
+		
+		$matches = $this->domDoc->getElementsByTagName("table");
+		foreach ($matches as $tag) {
+			$rows[]    = array();
+			$columns[] = array();
+			$table     = $tag->getAttribute('class');
+
+			if ( $table == $class ) {
+				$tag_code = $this->domDoc->saveHTML($tag);
+
+				if ($matches->length > 0) {
+					foreach ($tag->getElementsByTagName('tr') 
+							 as $id => $tableRow) {
+						$rows[$id] = $tableRow;
+						if ($matches->length > 0) {
+							foreach ($tableRow->getElementsByTagName('td') 
+									 as $cid => $tableCol) {
+								if (strlen($tableCol->textContent)  > 0) {
+									$columns[$id][$cid] = $tableCol;
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			$this->tagsList[$tag_code] = null;
+
+			$meta_attributes = $this->getElementAttributes($tag);
+			$tags_array = array(
+				'tag_code'          => $tag_code,
+				'rows'              => $rows,
+				'cols'              => $columns,
+				'meta_attributes'   => $meta_attributes );
+			}
+
+		return $tags_array;
+	}
+
+	/*
 	Function: 	getImgTagFromNode
 	Purpose: 	Use this when you want the entire nodeValue with HTML code
 	Returns: 	the nodeValue with including HTML (if it has any).

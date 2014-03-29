@@ -27,6 +27,7 @@ $webPageInfo['imgTags'] 		= $smf->getImgTags();
 $webPageInfo['headingTags'] 	= $smf->getHeadingTags();
 $webPageInfo['scriptTags'] 		= $smf->getScriptTags();
 $webPageInfo['styleTags'] 		= $smf->getStyleTags();
+$webPageInfo['tableTags']       = $smf->getTableTags('tableclass');
 $webPageInfo['pageMetaTags']	= $smf->getMetaTags();
 
 // these lists are built as the above methods are run.
